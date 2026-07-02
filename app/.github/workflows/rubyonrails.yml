@@ -1,0 +1,39 @@
+name: "Ruby on Rails CI"
+on: 
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:  
+          POSTGRES_DB: task_manager_test
+          POSTGRES_USER:  postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - "5432:5432"
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/task_manager_test"  
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+    
+      - name: Set up code
+        uses: ruby/setup-ruby@78c01b705fd9d5ad960d432d3a0cfa341d50e410
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      
+      - name: Setup database schema
+        run:  bin/rails db:schema:load
+
+      - name: Run test
+        run: bundle exec rspec
+

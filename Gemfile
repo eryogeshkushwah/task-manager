@@ -38,4 +38,7 @@ group :development, :test do
 
   # Generate realistic seed data
   gem "faker"
+
+  gem "rspec-rails"
+  gem "factory_bot_rails" 
 end
