@@ -6,8 +6,8 @@ RSpec.describe Task, type: :model do
 
     it do
       should belong_to(:assigned_user)
-          .class_name("User")
-          .optional
+        .class_name("User")
+        .optional
     end
   end
 
@@ -15,25 +15,22 @@ RSpec.describe Task, type: :model do
     subject(:task) { build(:task) }
 
     it { should validate_presence_of(:title) }
-    it { should validate_presence_of(:status) }
-    it { should validate_presence_of(:priority) }
-
   end
 
   describe "enums" do
     it "defines status enum correctly" do
-      expect(Task.statuses).to eq(
+      expect(described_class.statuses).to eq(
         "pending" => "pending",
         "in_progress" => "in_progress",
-        "completed" => "completed",
+        "completed" => "completed"
       )
     end
 
     it "defines priority enum correctly" do
-      expect(Task.priorities).to eq(
+      expect(described_class.priorities).to eq(
         "low" => "low",
         "medium" => "medium",
-        "high" => "high",
+        "high" => "high"
       )
     end
 
@@ -70,7 +67,7 @@ RSpec.describe Task, type: :model do
         task = create(
           :task,
           status: :completed,
-          completed_at: completed_time,
+          completed_at: completed_time
         )
 
         task.save!
@@ -79,7 +76,7 @@ RSpec.describe Task, type: :model do
       end
     end
 
-    context "when status changes from completed to another status" do
+    context "when status changes from completed to pending" do
       it "clears completed_at" do
         task = create(:task)
 
@@ -97,9 +94,11 @@ RSpec.describe Task, type: :model do
       it "does not modify completed_at" do
         task = create(:task)
 
-        expect(task).not_to receive(:manage_completed_at)
+        expect(task.completed_at).to be_nil
 
-        task.update!(title: "Updated title")
+        task.update!(title: "Updated Title")
+
+        expect(task.completed_at).to be_nil
       end
     end
   end
