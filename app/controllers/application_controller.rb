@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
   private
 
   def render_not_found(exception)
-    render json: { error: "#{exception.model} not found" }, status: :not_found
+    render json: { error: "#{exception.model} not found"  }, status: :not_found
   end
 
   def render_record_invalid(exception)
