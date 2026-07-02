@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
-  describe 'validations' do
+  describe 'validationss' do
     context 'validate title' do
       it 'title is valid' do
         task = build(:task)
